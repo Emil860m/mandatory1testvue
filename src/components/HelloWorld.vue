@@ -37,7 +37,7 @@
         <br>
         Total price: {{price}} DKK
         <br>
-        <input type="submit" value="Buy">
+        <input type="submit" value="Buy" v-on:click="buy">
       </div>
     </div>
   </div>
@@ -55,18 +55,37 @@ export default {
       phoneToDeselect: "",
       phones: [],
       internet: false,
-      phoneLines: 0
+      phoneLines: 0,
+      phonePrices: {
+        "Motorola G99": 800,
+        "iPhone 99": 6000,
+        "Samsung Galaxy 99": 1000,
+        "Sony Xperia 99": 900,
+        "Huawei 99": 900
+      }
     }
   },
   methods: {
     selectPhone() {
-      console.log(this.phoneToSelect)
       this.phones.push(this.phoneToSelect)
     },
     deselectPhone(){
-
       this.phones.splice(this.phones.indexOf(this.phoneToDeselect), 1)
+    },
+    buy() {
+      if(this.price === 0) {
+        alert("You have not selected to buy anything")
 
+      }
+      var tempString = "";
+      if(this.internet) tempString += "Internet selected\n"
+      if(this.phoneLines > 0) tempString += "Selected phone lines: " + this.phoneLines + "\n"
+      if(this.phones.length>0) tempString += "Phones selected: \n"
+      for (let i = 0; i <this.phones.length ; i++) {
+        tempString += this.phones[i] + "\n"
+      }
+      tempString += "Total price: " + this.price + "DKK"
+      alert(tempString)
     }
   },
   computed: {
@@ -74,6 +93,9 @@ export default {
       var tempPrice = 0;
       if (this.internet) tempPrice += 200;
       tempPrice += (150 * this.phoneLines);
+      for (let i = 0; i < this.phones.length; i++) {
+        tempPrice += this.phonePrices[this.phones[i]]
+      }
       return tempPrice
     }
   }
