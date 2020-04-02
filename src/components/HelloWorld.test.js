@@ -71,10 +71,10 @@ describe('phonePrices - each', () => {
     }),
 
     test.each([
-        ['Motorola G99','Samsung Galaxy 99' , 800 + 1000 ],
-        ['Samsung Galaxy 99','iPhone 99' ,  1000 + 6000 ],
-        ['Motorola G99','Huawei 99' , 800 + 900]
-    ])('selectPhone (phones, "%s" + "%s") - %s', (input1, input2, expected) => {
+        ['Motorola G99','Samsung Galaxy 99' , 800 + 1000 , true],
+        ['Samsung Galaxy 99','iPhone 99' ,  1000 + 6000 , true ],
+        ['Motorola G99','Huawei 99' , 800 + 900 , true]
+    ])('selectPhone (phones, "%s" + "%s") - %s', (input1, input2, expectedPrice , boolResult) => {
 
         // Reset phones per test
         phones = [];
@@ -83,6 +83,16 @@ describe('phonePrices - each', () => {
         functions.selectPhone(phones, input2)
 
         const result = functions.price(internet, phoneLines, phones, phonePrices)
-        expect(result).toBe(expected)
+        
+        if ( result == expectedPrice)
+        {
+            boolResult = true;
+        }
+        else
+        {
+            boolResult = false;
+        }
+
+        expect(boolResult).toBe(true)
     })
 })
